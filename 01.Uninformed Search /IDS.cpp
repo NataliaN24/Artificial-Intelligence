@@ -3,10 +3,6 @@
 
 using namespace std;
 
-// ------------------------------
-// GRAPH CLASS (your version)
-// ------------------------------
-
 class Graph {
     int numVertices;
     vector<int>* adjList;

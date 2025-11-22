@@ -1,3 +1,76 @@
+//1st option
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+struct Edge {
+    int to;
+    int cost;
+};
+
+vector<vector<Edge>> graph = {
+    { {1, 2}, {2, 5} },   // 0 -> 1, 0 -> 2
+    { {3, 1} },           // 1 -> 3
+    { {3, 2} },           // 2 -> 3
+    {}
+};
+
+// хевристика h(n)
+int h(int node) {
+    int heuristics[] = {4, 2, 3, 0};
+    return heuristics[node];
+}
+
+struct Node {
+    int id;
+    int h;
+};
+
+struct Compare {
+    bool operator()(const Node& a, const Node& b) {
+        return a.h > b.h;  // min-heap по h(n)
+    }
+};
+
+int Greedy(int start, int goal) {
+    priority_queue<Node, vector<Node>, Compare> pq;
+    vector<bool> visited(4, false);
+
+    pq.push({start, h(start)});
+
+    while (!pq.empty()) {
+        Node u = pq.top();
+        pq.pop();
+
+        if (visited[u.id]) continue;
+        visited[u.id] = true;
+
+        cout << "Visited: " << u.id << " (h=" << h(u.id) << ")\n";
+
+        if (u.id == goal)
+            return 1;  // намерено
+
+        for (auto &e : graph[u.id]) {
+            int v = e.to;
+            if (!visited[v]) {
+                pq.push({v, h(v)});
+            }
+        }
+    }
+
+    return 0; // не е намерено
+}
+
+int main() {
+    Greedy(0, 3);
+    return 0;
+}
+
+
+
+//2nd option
 #include <iostream>
 #include <queue>
 #include <unordered_map>

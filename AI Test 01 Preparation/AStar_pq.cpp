@@ -1,98 +1,108 @@
 #include<iostream>
 #include<vector>
 #include<queue>
-#include<algorithm>
+#include <cmath>
+#include <algorithm>
+#include<set>
 using namespace std;
 
-vector<vector<pair<int,int>>> graph;
-vector<int> h;
-vector<int> g;
-vector<int> parent;
-vector<bool> visited;
 
-struct Node {
-    int v, f;
-    bool operator<(const Node& other) const {
-        return f > other.f;
-    }
+vector<vector<pair<int,int>>>graph;
+vector<bool>visited;
+vector<int>parent;
+vector<int>h;
+vector<int>g;
+
+struct Node
+{
+	int v;
+	int f;
+	bool operator<(const Node& other)const
+	{
+		return f > other.f;
+
+	}
 };
 
-int astar(int start, int goal)
+bool Astar(int start, int goal)
 {
-    priority_queue<Node> pq;
-    pq.push({start, h[start]});
-    g[start] = 0;
-    parent[start] = -1;
+	priority_queue<Node>pq;
+	g[start] = 0;
+	parent[start] = -1;
+	pq.push({ start,h[start]+g[start]});
 
-    while (!pq.empty())
-    {
-        int u = pq.top().v;
-        pq.pop();
+	while (!pq.empty())
+	{
+		int node = pq.top().v;
+		pq.pop();
 
-        if (visited[u]) continue;
-        visited[u] = true;
+		if (visited[node])continue;
 
-        if (u == goal) return 1;
+		visited[node] = true;
 
-        for (auto& p : graph[u])
-        {
-            int v = p.first;
-            int cost = p.second;
+		if (node == goal)return true;
 
-            int new_g = g[u] + cost;
+		for (auto& pr : graph[node])
+		{
+			int v = pr.first;
+			int cost = pr.second;
+			int newG = g[node] + cost;
 
-            if (new_g < g[v])
-            {
-                g[v] = new_g;
-                parent[v] = u;
-                pq.push({v, g[v] + h[v]});
-            }
-        }
-    }
-
-    return 0;
+			if (newG < g[v])
+			{
+				g[v] = newG;
+				parent[v] = node;
+				pq.push({ v,g[v] + h[v] });
+			}
+		}
+	}
+	return false;
 }
 
-void printPath(int goal)
+void printPath(int target)
 {
-    vector<int> path;
-    int u = goal;
-    while (u != -1)
-    {
-        path.push_back(u);
-        u = parent[u];
-    }
-    reverse(path.begin(), path.end());
-    for (int x : path) cout << x << " ";
+	vector<int>path;
+	int u = target;
+	while (u != -1)
+	{
+		path.push_back(u);
+		u = parent[u];
+	}
+	reverse(path.begin(), path.end());
+	for (int c : path)
+	{
+		cout << c << " ";
+	}
 }
+
 
 int main()
 {
-    int n, m;
-    cin >> n >> m;
+	int n, edges;
+	cin >> n >> edges;
 
-    graph.assign(n, {});
-    h.assign(n, 0);
-    g.assign(n, 1e9);
-    parent.assign(n, -1);
-    visited.assign(n, false);
+	graph.assign(n, {});
+	h.assign(n, 0);
+	g.assign(n, 1000000000);
+	parent.assign(n, -1);
+	visited.assign(n, false);
 
-    for (int i = 0; i < n; i++)
-        cin >> h[i];
+	for (int i = 0; i < n; i++)
+	{
+		cin >> h[i];
+	}
+	for (int i = 0; i < edges; i++)
+	{
+		int u, v, w;
+		cin >> u >> v >> w;
+		graph[u].push_back({ v,w });
+		graph[v].push_back({ u,w });
+	}
+	int start, goal;
+	cin >> start >> goal;
 
-    for (int i = 0; i < m; i++)
-    {
-        int u, v, w;
-        cin >> u >> v >> w;
-        graph[u].push_back({v, w});
-        graph[v].push_back({u, w});
-    }
-
-    int start, goal;
-    cin >> start >> goal;
-
-    if (astar(start, goal))
-        printPath(goal);
-    else
-        cout << -1;
+	if (Astar(start, goal))
+		printPath(goal);
+	else
+		cout << -1;
 }

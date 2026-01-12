@@ -12,3 +12,8 @@ kNN е supervised learning метод за:
 
 <img width="1048" height="412" alt="image" src="https://github.com/user-attachments/assets/4deeb86d-cef5-4490-bd29-aa10ce7e5e2b" />
 <img width="1077" height="397" alt="image" src="https://github.com/user-attachments/assets/2f74e199-66c8-4a5e-9d96-8e097891f4b3" />
+<img width="1032" height="357" alt="image" src="https://github.com/user-attachments/assets/fbb121d0-7fe6-4b01-878a-03947209a09c" />
+
+Стратификация означава:
+
+👉 всеки fold да запази приблизително същото съотношение на класовете, както в целия dataset.

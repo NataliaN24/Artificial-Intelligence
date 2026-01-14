@@ -15,3 +15,22 @@
 Изчисли Accuracy за всеки fold
 
 Изчисли средна Accuracy
+
+
+Какво означава N-Fold Cross-Validation
+
+Имаш dataset с M примера.
+
+Разделяш ги на N приблизително равни части → folds
+
+Правиш N експеримента
+
+Всеки път:
+
+1 fold = test set
+
+останалите N-1 folds = training set
+
+Мериш Accuracy
+
+Накрая взимаш средната Accuracy
